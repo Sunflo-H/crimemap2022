@@ -12,53 +12,50 @@
     <div id="map" style="width:1000px; height:500px; margin-top:40px"></div>
 </body>
 <script>
+    // 심각성       1(빨강), 2(주황), 3(노랑)
+    // 범죄종류     살인,성폭력,아동폭행 (1)
+    //              도둑, 강도 (2)
+    //              사기, 기타 (3)                
     var map = new naver.maps.Map('map', {
-            bounds: naver.maps.LatLngBounds.bounds(new naver.maps.LatLng(37.3585229, 127.1010728),
-                                                new naver.maps.LatLng(37.3658036, 127.1222656))
+            center: new naver.maps.LatLng(37.3595704, 127.105399),
+            zoom: 15
     });
 
-    var greenMarker = new naver.maps.Marker({
-    position: new naver.maps.LatLng(37.3613962, 127.1112487),
-    map: map,
-    title: 'Green',
-    icon: {
-        content: [
-                    '<div class="cs_mapbridge">',
-                        '<div class="map_group _map_group crs">',
-                            '<div class="map_marker _marker num1 num1_big"> ',
-                                '<span class="ico _icon"></span>',
-                                '<span class="shd"></span>',
-                            '</div>',
-                        '</div>',
-                    '</div>'
-                ].join(''),
-        size: new naver.maps.Size(38, 58),
-        anchor: new naver.maps.Point(19, 58),
-    },
-    draggable: true
-});
+    // var marker = new naver.maps.Marker({
+    //         position: new naver.maps.LatLng(37.3595704, 127.105399),
+    //         map: map
+    // });
 
-var pinkMarker = new naver.maps.Marker({
-    position: new naver.maps.LatLng(37.3637770, 127.1174332),
-    map: map,
-    icon: {
-        content: [
-                    '<div class="cs_mapbridge">',
-                        '<div class="map_group _map_group">',
-                            '<div class="map_marker _marker tvhp tvhp_big">',
-                                '<span class="ico _icon"></span>',
-                                '<span class="shd"></span>',
-                            '</div>',
-                        '</div>',
-                    '</div>'
-                ].join(''),
-        size: new naver.maps.Size(38, 58),
-        anchor: new naver.maps.Point(19, 58),
+    let marker = createMarker('사기', '2022-07-03', '20:14', 3);
+
+    function createMarker(title, date, time, danger) {
+        let _title = title,
+        _date = date,
+        _time = time;
+
+        let color;
+        switch(danger) {
+            case 1 : color = 'red'; break;
+            case 2 : color = 'orange'; break;
+            case 3 : color = 'yellow'; break;
+        }
+
+        let marker = new naver.maps.Marker({
+            position: new naver.maps.LatLng(37.3595704, 127.105399),
+            map: map,
+            icon: {
+                content: `<div style="paddind:5px; background-color:${color}">
+                                <div style="">${_title}</div>
+                                <div style="">${_date}</div>
+                                <div style="">${_time}</div>
+                            </div>`,
+                size: new naver.maps.Size(38, 58),
+                anchor: new naver.maps.Point(19, 58),
+            },
+            draggable: false 
+        });
+        return marker;
     }
-});
-
-pinkMarker.setTitle('Pink Hot');
-pinkMarker.setDraggable(true);
 </script>
 </html>
 
